@@ -44,7 +44,7 @@ function Provider() {
           className="animate-rise rounded-3xl bg-card p-6 shadow-float [animation-delay:150ms]"
           onSubmit={(e) => {
             e.preventDefault();
-            if (!form.name || !form.vehicle || !form.plate) return toast.error("Please fill in all fields");
+            if (!form.name || !form.vehicle || !form.plate) { toast.error("Please fill in all fields"); return; }
             update({ provider: { ...provider, ...form, registered: true } });
             toast.success("Welcome to Palama!");
           }}
