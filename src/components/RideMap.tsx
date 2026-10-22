@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import type { Map as LMap, Marker, Polyline } from "leaflet";
 import type { Place } from "@/lib/places";
 
-type Props = { pickup?: Place; dest?: Place; progress?: number; className?: string };
+type Props = { pickup?: Place | undefined; dest?: Place | undefined; progress?: number | undefined; className?: string };
 
 export function RideMap({ pickup, dest, progress, className }: Props) {
   const el = useRef<HTMLDivElement>(null);

@@ -50,6 +50,7 @@ function Home() {
       }, 250);
       return () => clearInterval(i);
     }
+    return undefined;
   }, [phase]);
 
   const carPos = pickup && dest
