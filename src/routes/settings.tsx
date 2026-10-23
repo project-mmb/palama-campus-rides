@@ -13,6 +13,8 @@ export const Route = createFileRoute("/settings")({
       { name: "description", content: "Manage your Palama profile, campus, trusted contacts and ride preferences." },
       { property: "og:title", content: "Settings — Palama" },
       { property: "og:description", content: "Manage your Palama profile, campus and trusted contacts." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Settings,

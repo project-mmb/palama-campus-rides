@@ -14,6 +14,8 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Safe, affordable rides between Botswana's universities, campuses and town. Built for students." },
       { property: "og:title", content: "Palama — Student rides across Botswana" },
       { property: "og:description", content: "Safe, affordable rides between Botswana's universities, campuses and town." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Home,
@@ -65,7 +67,6 @@ function Home() {
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden bg-hero text-primary-foreground">
-        <div className="pointer-events-none absolute bottom-6 left-0 text-5xl animate-drive">🚕</div>
         <div className="mx-auto grid max-w-6xl gap-10 px-4 pb-28 pt-16 md:grid-cols-2 md:pt-24">
           <div className="animate-rise">
             <span className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/15 px-3 py-1 text-xs font-bold uppercase tracking-widest">
@@ -130,8 +131,8 @@ function Home() {
                 km={km}
                 remaining={remaining}
                 progress={progress}
-                pickupName={pickup!.name}
-                destName={dest!.name}
+                 pickupName={pickup?.name ?? ""}
+                 destName={dest?.name ?? ""}
                 carPos={carPos}
                 onCancel={reset}
               />

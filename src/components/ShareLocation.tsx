@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { Copy, MessageCircle, Send, Share2, Smartphone } from "lucide-react";
 import { toast } from "sonner";
 import { useStore } from "@/lib/store";
@@ -48,11 +47,7 @@ export function ShareLocation({ position, destName, driver }: Props) {
             </li>
           ))}
         </ul>
-      ) : (
-        <p className="text-xs text-muted-foreground">
-          Save trusted contacts in <Link to="/settings" className="font-semibold text-primary underline">Settings</Link> for one-tap sharing.
-        </p>
-      )}
+      ) : null}
 
       <div className="flex gap-2">
         <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Any number, e.g. +267 71 234 567" className="flex-1 rounded-xl border border-input bg-card px-3 py-2 text-sm outline-none focus:border-primary" />
