@@ -4,7 +4,9 @@ import { ArrowDownUp, Car, Clock, GraduationCap, MapPin, Navigation, ShieldCheck
 import { RideMap } from "@/components/RideMap";
 import { PlacePicker } from "@/components/PlacePicker";
 import { ShareLocation } from "@/components/ShareLocation";
-import { etaMinutes, findPlace, isWithinLimit, MAX_RIDE_KM, rideKm, UNIVERSITIES } from "@/lib/places";
+import {
+  etaMinutes, findPlace, isWithinLimit, MAX_RIDE_KM, rideKm, straightKm, UNIVERSITIES, type Place,
+} from "@/lib/places";
 import { useStore } from "@/lib/store";
 
 export const Route = createFileRoute("/")({
@@ -27,18 +29,17 @@ const TRIP_SECONDS = 45;
 
 function Home() {
   const { profile } = useStore();
-  const [pickupId, setPickupId] = useState("");
-  const [destId, setDestId] = useState("");
+  const [pickup, setPickup] = useState<Place | undefined>(undefined);
+  const [dest, setDest] = useState<Place | undefined>(undefined);
   const [phase, setPhase] = useState<Phase>("idle");
   const [progress, setProgress] = useState(0);
 
-  useEffect(() => { if (!pickupId && profile.universityId) setPickupId(profile.universityId); }, [profile.universityId]);
-
-  const pickup = findPlace(pickupId);
-  const dest = findPlace(destId);
+  useEffect(() => {
+    if (!pickup && profile.universityId) setPickup(findPlace(profile.universityId));
+  }, [profile.universityId, pickup]);
   const km = useMemo(() => (pickup && dest ? rideKm(pickup, dest) : 0), [pickup, dest]);
   const tooFar = km > 0 && !isWithinLimit(km);
-  const same = pickupId && pickupId === destId;
+  const same = !!pickup && !!dest && straightKm(pickup, dest) < 0.05;
 
   useEffect(() => {
     if (phase === "searching") { const t = setTimeout(() => setPhase("matched"), 2200); return () => clearTimeout(t); }
@@ -93,15 +94,15 @@ function Home() {
               <>
                 <h2 className="text-2xl font-bold">Where to?</h2>
                 <div className="relative mt-5 space-y-3">
-                  <PlacePicker label="Collection point" value={pickupId} onChange={setPickupId} dot="pickup" />
+                  <PlacePicker label="Collection point" value={pickup} onSelect={setPickup} other={dest} dot="pickup" />
                   <button
-                    onClick={() => { setPickupId(destId); setDestId(pickupId); }}
-                    aria-label="Swap"
+                    onClick={() => { setPickup(dest); setDest(pickup); }}
+                    aria-label="Swap collection point and destination"
                     className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full border border-border bg-card p-2 transition-transform hover:rotate-180"
                   >
                     <ArrowDownUp className="h-4 w-4" />
                   </button>
-                  <PlacePicker label="Destination" value={destId} onChange={setDestId} dot="dest" />
+                  <PlacePicker label="Destination" value={dest} onSelect={setDest} other={pickup} dot="dest" />
                 </div>
 
                 {pickup && dest && !same && (
@@ -118,7 +119,7 @@ function Home() {
                 {same && <p className="mt-4 text-sm text-muted-foreground">Pick two different places.</p>}
 
                 <button
-                  disabled={!pickup || !dest || tooFar || !!same}
+                  disabled={!pickup || !dest || tooFar || same}
                   onClick={() => setPhase("searching")}
                   className="mt-6 w-full rounded-2xl bg-primary py-4 text-base font-bold text-primary-foreground shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-float disabled:pointer-events-none disabled:opacity-40"
                 >
@@ -153,7 +154,7 @@ function Home() {
 
         <div className="mt-16 grid gap-4 md:grid-cols-3">
           {[
-            { t: "Pick your campus", d: "Every university and college in Botswana is built in — no typing addresses." },
+            { t: "Tap the map", d: "Search a campus or drop a pin anywhere — set your exact pickup and drop-off in a tap." },
             { t: "Ride with peace of mind", d: "See your distance live and share your location with anyone in one tap." },
             { t: "Drive & earn", d: "Got a car? Become a Palama provider and earn between lectures." },
           ].map((f, i) => (

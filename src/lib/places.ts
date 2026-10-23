@@ -78,3 +78,25 @@ export function isWithinLimit(km: number) {
 export function etaMinutes(km: number) {
   return Math.max(2, Math.round((km / AVG_SPEED_KMH) * 60));
 }
+
+/** A spot the rider dropped on the map instead of picking a saved place. */
+export function droppedPin(lat: number, lng: number, name = "Dropped pin"): Place {
+  return {
+    id: `pin-${lat.toFixed(5)}-${lng.toFixed(5)}`,
+    name: name.trim() || "Dropped pin",
+    area: "",
+    lat,
+    lng,
+    kind: "place",
+  };
+}
+
+export function isMapPin(p: Place) {
+  return p.id.startsWith("pin-");
+}
+
+export function formatCoords(p: { lat: number; lng: number }) {
+  const ns = p.lat >= 0 ? "N" : "S";
+  const ew = p.lng >= 0 ? "E" : "W";
+  return `${ns} ${Math.abs(p.lat).toFixed(4)}°, ${ew} ${Math.abs(p.lng).toFixed(4)}°`;
+}
