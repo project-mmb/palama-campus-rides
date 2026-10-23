@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LeafletMouseEvent, Map as LMap, Marker } from "leaflet";
 import { Crosshair, Loader2, Search, X } from "lucide-react";
@@ -151,7 +152,7 @@ export function MapPicker({ label, dot, value, other, onSelect, onClose }: Props
     );
   }
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-[2000] flex items-end justify-center bg-foreground/45 backdrop-blur-sm animate-in fade-in duration-200 sm:items-center sm:p-6"
       onMouseDown={onClose}
@@ -286,6 +287,7 @@ export function MapPicker({ label, dot, value, other, onSelect, onClose }: Props
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
