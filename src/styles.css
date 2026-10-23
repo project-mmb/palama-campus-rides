@@ -141,6 +141,11 @@
 @keyframes dash {
   to { stroke-dashoffset: -40; }
 }
+@keyframes pin-drop {
+  0% { transform: translateY(-16px) scale(0.6); opacity: 0; }
+  60% { transform: translateY(3px) scale(1.08); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
 
 @utility animate-rise {
   animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
@@ -160,6 +165,7 @@
 .palama-pin span {
   display: block; width: 18px; height: 18px; border-radius: 9999px;
   border: 3px solid var(--card); box-shadow: var(--shadow-soft);
+  animation: pin-drop 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 .palama-pin.pickup span { background: var(--primary); }
 .palama-pin.dest span { background: var(--accent); }
