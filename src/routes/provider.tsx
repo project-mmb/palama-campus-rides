@@ -12,6 +12,8 @@ export const Route = createFileRoute("/provider")({
       { name: "description", content: "Offer rides to students across Botswana. Go online, accept trips and earn." },
       { property: "og:title", content: "Drive with Palama — Providers" },
       { property: "og:description", content: "Offer rides to students across Botswana and earn." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Provider,
@@ -38,7 +40,6 @@ function Provider() {
           <span className="text-sm font-bold uppercase tracking-widest text-primary">Palama providers</span>
           <h1 className="mt-3 text-5xl font-black leading-tight md:text-6xl">Your car. Your hours. <em className="text-primary">Student fares.</em></h1>
           <p className="mt-4 max-w-md text-muted-foreground">Offer rides between campuses and town. Trips are always within {MAX_RIDE_KM} km, so you're never far from home.</p>
-          <div className="mt-8 text-7xl animate-floaty">🚕</div>
         </div>
         <form
           className="animate-rise rounded-3xl bg-card p-6 shadow-float [animation-delay:150ms]"
